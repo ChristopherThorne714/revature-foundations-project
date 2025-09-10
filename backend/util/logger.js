@@ -2,17 +2,24 @@ const {createLogger, transports, format} = require("winston");
 const { combine, timestamp, label, prettyPrint } = format;
 
 const logger = createLogger({
-    format: combine(
-    label({ label: 'right meow!' }),
-    timestamp(),
-    prettyPrint()
+    format: format.combine(
+        format.timestamp(),
+        format.printf(({ timestamp, level, message }) => {
+            return `${timestamp} [${level}]: ${message}`;
+        })
     ),
     transports: [
         new (transports.Console)(),
-        new (transports.File)({filename: 'somefile.log'})
-    ]
+        new (transports.File)({filename: 'app.log'})
+    ],
 });
 
+function loggerMiddleware(req, res, next) {
+    logger.info(`Incoming ${req.method} : ${req.url}`);
+    next();
+}
+
 module.exports = {
-    logger
+    logger,
+    loggerMiddleware
 };
