@@ -1,0 +1,30 @@
+{
+  "name": "revature-foundations-project",
+  "version": "1.0.0",
+  "description": "revature 2170 foundations project: ticketing reimbursement system.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristopherThorne714/revature-foundations-project-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ChristopherThorne714/revature-foundations-project-/issues"
+  },
+  "homepage": "https://github.com/ChristopherThorne714/revature-foundations-project-#readme",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.883.0",
+    "@aws-sdk/lib-dynamodb": "^3.883.0",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "uuid": "^13.0.0",
+    "winston": "^3.17.0"
+  }
+}
