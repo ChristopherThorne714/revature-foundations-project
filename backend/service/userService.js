@@ -8,7 +8,7 @@ async function postUser(user) {
     if (validateUser(user)) {
         const password = await bcrypt.hash(user.password, saltRounds);
         const data = await userDAO.postUser({
-            username: user.usernamem,
+            username: user.username,
             password,
             user_id: crypto.randomUUID()
         })
