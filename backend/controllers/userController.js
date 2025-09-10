@@ -1,6 +1,5 @@
 const userService = require('../service/userService');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
 const secretKey = 'my-secret-key';
 
@@ -26,6 +25,16 @@ const Login = async (req, res) => {
     }
 }
 
+const RegisterUser = async (req, res) => { 
+    const data = await userService.postUser(req.body);
+    if (data) { 
+        res.status(201).json({message: `Created user: ${JSON.stringify(data)}`});
+    } else { 
+        res.status(400).json({message: `User not created`, data: req.body});
+    }
+}
+
 module.exports = {
     Login,
+    RegisterUser
 }

@@ -11,7 +11,6 @@ async function postUser(user) {
         TableName, 
         Item: user
     })
-
     try { 
         const data = await documentClient.send(command);
         logger.info(`PUT command to database complete ${JSON.stringify(data)}`);
