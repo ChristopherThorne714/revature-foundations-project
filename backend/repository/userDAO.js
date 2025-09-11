@@ -5,7 +5,7 @@ const { logger } = require('../util/logger');
 const client = new DynamoDBClient({region: 'us-east-1'});
 const documentClient = DynamoDBDocumentClient.from(client);
 
-const TableName = "tickets_table";
+const TableName = "users_table";
 
 async function createUser(user) {
     const command = new PutCommand({
@@ -33,7 +33,7 @@ async function findUserByUsername(username) {
     try {
         const data = await documentClient.send(command);
         logger.info(`SCAN command to database complete ${JSON.stringify(data)}`);
-        return data.Items[0];
+        return data.Items.length > 0 ? data.Items[0] : null;
     } catch (err) { 
         logger.error(err);
         return null;

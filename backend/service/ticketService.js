@@ -10,7 +10,7 @@ async function postTicket(ticket) {
             amount: ticket.amount,
             description: ticket.description,
             pending,
-            ticket_id: crypto.randomUUID()
+            // ticket_id: crypto.randomUUID() // to be replaced with the id of the user who posted the ticket
         });
         logger.info(`Creating new user | ticketService | postTicket | Data: ${data}`);
         return data;
