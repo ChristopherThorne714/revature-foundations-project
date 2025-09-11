@@ -3,10 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const secretKey = 'my-secret-key';
 
-const { authenticateToken } = require('../util/jwt');
-
 const Login = async (req, res) => { 
-    const {username, password } = req.body;
+    const {username, password, role } = req.body;
     const data = await userService.validateLogin(username, password);
     if (data) { 
         const token = jwt.sign(
@@ -16,7 +14,7 @@ const Login = async (req, res) => {
             },
             secretKey,
             {
-                expiresIn: "5m"
+                expiresIn: "15m"
             }
         );
         res.status(200).json({message: "you have logged in", token});
@@ -26,11 +24,23 @@ const Login = async (req, res) => {
 }
 
 const RegisterUser = async (req, res) => { 
-    const data = await userService.postUser(req.body);
-    if (data) { 
-        res.status(201).json({message: `Created user: ${JSON.stringify(data)}`});
+    if(validatePostUser(req.body)) {
+        const data = await userService.postUser(req.body);
+        if (data) { 
+            res.status(201).json({message: `Created user: ${JSON.stringify(data)}`});
+        } else { 
+            res.status(400).json({message: `User not created`, data: req.body});
+        }
     } else { 
-        res.status(400).json({message: `User not created`, data: req.body});
+        res.status(400).json({message: `Invalid username or password`, data: req.body});
+    }
+}
+
+function validatePostUser(user) {
+    if (user.username && user.password) {
+        return true;
+    } else { 
+        return false;
     }
 }
 

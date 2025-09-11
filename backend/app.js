@@ -12,13 +12,16 @@ app.use(bodyParser.json());
 app.use(loggerMiddleware);
 
 app.use('/api/users', userRoutes);
+
+app.use(authenticateToken);
+
 // app.use('/api/tickets', ticketRoutes);
 
 app.get('/', (req, res) => { 
     res.send('Home Page');
 })
 
-app.get('/protected', authenticateToken, (req, res) => { 
+app.get('/protected', (req, res) => { 
     res.json({message: 'Accessed protected route', user: req.user});
 })
 

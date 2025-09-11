@@ -5,9 +5,9 @@ const { logger } = require('../util/logger');
 const client = new DynamoDBClient({region: 'us-east-1'});
 const documentClient = DynamoDBDocumentClient.from(client);
 
-const TableName = "users_table";
+const TableName = "tickets_table";
 
-async function postUser(user) {
+async function createUser(user) {
     const command = new PutCommand({
         TableName, 
         Item: user
@@ -22,7 +22,7 @@ async function postUser(user) {
     }
 }
 
-async function getUserByUsername(username) { 
+async function findUserByUsername(username) { 
     const command = new ScanCommand({ 
         TableName, 
         FilterExpression: '#username = :username',
@@ -41,6 +41,6 @@ async function getUserByUsername(username) {
 }
 
 module.exports = {
-    postUser,
-    getUserByUsername
+    createUser,
+    findUserByUsername
 };

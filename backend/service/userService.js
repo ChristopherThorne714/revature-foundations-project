@@ -5,17 +5,19 @@ const { logger } = require('../util/logger');
 
 async function postUser(user) {
     const saltRounds = 10; 
-    if (validateUser(user)) {
+    const role = !user.role ? "employee" : user.role;
+    if (validateUser(user) && userDAO.findUserByUsername(user.username)) {
         const password = await bcrypt.hash(user.password, saltRounds);
-        const data = await userDAO.postUser({
+        const data = await userDAO.createUser({
             username: user.username,
             password,
-            user_id: crypto.randomUUID()
+            user_id: crypto.randomUUID(),
+            role
         })
-        logger.info(`Creating new user: ${JSON.stringify(data)}`);
+        logger.info(`Creating new user | userService | postUser | Data:  ${JSON.stringify(data)}`);
         return data;
     } else {
-        logger.info(`Failed to validate user: ${JSON.stringify(user)}`);
+        logger.info(`Failed to validate user or invalid username | userService | postUser | Data:  ${JSON.stringify(user)}`);
     }
 }
 
@@ -32,7 +34,7 @@ async function validateLogin(username, password) {
 
 async function getUserByUsername(username) { 
     if (username) {
-        const data = await userDAO.getUserByUsername(username);
+        const data = await userDAO.findUserByUsername(username);
         if (data) {
             logger.info(`User found by username: ${JSON.stringify(data)}`);
             return data;
