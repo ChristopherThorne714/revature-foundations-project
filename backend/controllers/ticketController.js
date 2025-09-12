@@ -88,5 +88,6 @@ module.exports = {
     PostTicket,
     GetTickets,
     GetTicketsByAuthor,
-    GetTicketsByStatus
+    GetTicketsByStatus,
+    validatePostTicket
 }

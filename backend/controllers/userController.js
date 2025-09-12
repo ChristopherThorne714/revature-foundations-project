@@ -59,5 +59,6 @@ function validatePostUser(user) {
 
 module.exports = {
     Login,
-    RegisterUser
+    RegisterUser,
+    validatePostUser
 }

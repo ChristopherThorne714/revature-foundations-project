@@ -11,4 +11,13 @@ router.get('/author/:author', ticketController.GetTicketsByAuthor);
 
 router.get('/status/:status', ticketController.GetTicketsByStatus);
 
+/**
+ * TODO: 
+ *  register more routes for: approving/denying tickets
+ *      view pending tickets
+ *      view approved tickets
+ *  employees should be able to view their own ticket history
+ *  previous/archived tickets should show submission details
+ */
+
 module.exports = router;
