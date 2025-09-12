@@ -6,8 +6,9 @@ const { logger } = require('../util/logger');
 async function postUser(user) {
     const saltRounds = 10; 
     const role = !user.role ? "employee" : user.role;
-    // next line contains a bug
-    if (validateUser(user) && await !userDAO.findUserByUsername(user.username)) {
+    const uniqueUser = await userDAO.findUserByUsername(user.username);
+
+    if (validateUser(user) && !uniqueUser) {
         const password = await bcrypt.hash(user.password, saltRounds);
         const data = await userDAO.createUser({
             username: user.username,
