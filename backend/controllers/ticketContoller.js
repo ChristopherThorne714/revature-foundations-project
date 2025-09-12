@@ -1,15 +1,16 @@
 const ticketService = require('../service/ticketService');
 
+
+
 async function postTicket(req, res) { 
     if (validatePostTicket(req.body)) {
-
-    }
-    const { amount, description, pending } = req.body;
-    const data = await ticketService.postTicket({amount, description, pending});
-    if (data) { 
-        res.status(201).json({message: "Ticket created", data});
-    } else { 
-        res.status(400).json({message: "Invalid ticket"});
+        const { amount, description, pending, author } = req.body;
+        const data = await ticketService.postTicket({amount, description, pending, author});
+        if (data) { 
+            res.status(201).json({message: "Ticket created", data});
+        } else { 
+            res.status(400).json({message: "Invalid ticket"});
+        }
     }
 }
 
@@ -44,7 +45,7 @@ async function getTicketsByStatus(req, res) {
 
 async function validatePostTicket(ticket) { 
     if (ticket.amount && ticket.description && ticket.pending) {
-        
+
     }
 }
 

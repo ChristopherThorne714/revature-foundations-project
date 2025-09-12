@@ -11,7 +11,7 @@ async function postTicket(ticket) {
             description: ticket.description,
             pending,
             ticket_id: crypto.randomUUID(),
-            author: something
+            author: ticket.author
         });
         logger.info(`Creating new user | ticketService | postTicket | Data: ${data}`);
         return data;
@@ -31,6 +31,7 @@ async function getTickets() {
         return null;
     }
 }
+
 async function getTicketsByUsername(username) { 
     if(username) { 
         const data = ticketDAO.findTicketsByUsername(username);
