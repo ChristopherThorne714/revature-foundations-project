@@ -15,7 +15,7 @@ app.use('/api/users', userRoutes);
 
 app.use(authenticateToken);
 
-// app.use('/api/tickets', ticketRoutes);
+app.use('/api/tickets', ticketRoutes);
 
 app.get('/', (req, res) => { 
     res.send('Home Page');

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'my-secret-key';
 
 const Login = async (req, res) => { 
-    const {username, password, role } = req.body;
+    const {username, password} = req.body;
     const data = await userService.validateLogin(username, password);
     if (data) { 
         const token = jwt.sign(
@@ -17,7 +17,7 @@ const Login = async (req, res) => {
                 expiresIn: "15m"
             }
         );
-        res.status(200).json({message: "you have logged in", token});
+        res.status(202).json({message: "you have logged in", token});
     } else { 
         res.status(401).json({message: "invalid login credentials"});
     }

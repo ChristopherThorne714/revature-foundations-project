@@ -10,7 +10,8 @@ async function postTicket(ticket) {
             amount: ticket.amount,
             description: ticket.description,
             pending,
-            // ticket_id: crypto.randomUUID() // to be replaced with the id of the user who posted the ticket
+            ticket_id: crypto.randomUUID(),
+            author: something
         });
         logger.info(`Creating new user | ticketService | postTicket | Data: ${data}`);
         return data;
@@ -61,4 +62,11 @@ function validateTicket(ticket) {
     const amountResult = !ticket.amount ? false : true;
     const descResult = ticket.description > 0;
     return (amountResult && descResult);
+}
+
+module.exports = {
+    postTicket,
+    getTickets,
+    getTicketsByUsername,
+    getTicketsByStatus
 }

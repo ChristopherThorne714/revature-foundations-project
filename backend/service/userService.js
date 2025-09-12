@@ -26,10 +26,11 @@ async function postUser(user) {
 async function validateLogin(username, password) { 
     const user = await getUserByUsername(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-        logger.info(`User logged in successfully`);
+        logger.info(`User logged in successfully | userService | validateLogin `);
         return user;
     } else { 
-        logger.info(`Invalid user credentials`);
+        logger.info(`Invalid user credentials | userService 
+             validateLogin`);
         return null;
     }
 }
@@ -38,14 +39,14 @@ async function getUserByUsername(username) {
     if (username) {
         const data = await userDAO.findUserByUsername(username);
         if (data) {
-            logger.info(`User found by username: ${JSON.stringify(data)}`);
+            logger.info(`User found | userService | getUserByUsernamer | username: ${JSON.stringify(data)}`);
             return data;
         } else {
-            logger.info(`User not found by username: ${JSON.stringify(data)}`);
+            logger.info(`User not found | userService | getUserByUsername |   username: ${JSON.stringify(data)}`);
             return null;
         }
     }
-    logger.info(`No username given`);
+    logger.info(`No username given | userService | getUserByUsername`);
     return null;
 }
 
