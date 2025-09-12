@@ -37,11 +37,7 @@ const RegisterUser = async (req, res) => {
 }
 
 function validatePostUser(user) {
-    if (user.username && user.password) {
-        return true;
-    } else { 
-        return false;
-    }
+    return (user.username && user.password);
 }
 
 module.exports = {

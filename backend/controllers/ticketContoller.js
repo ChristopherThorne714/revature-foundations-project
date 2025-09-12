@@ -44,9 +44,7 @@ async function getTicketsByStatus(req, res) {
 }
 
 async function validatePostTicket(ticket) { 
-    if (ticket.amount && ticket.description && ticket.pending) {
-
-    }
+    return (ticket.amount && ticket.description && ticket.author);
 }
 
 module.exports = { 

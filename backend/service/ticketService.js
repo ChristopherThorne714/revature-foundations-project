@@ -67,8 +67,15 @@ async function getTicketsByUsername(username) {
     }
 }
 
-async function getTicketsByStatus(pending) {
-    const data = ticketDAO.findTicketsByStatus(pending)
+/**
+ * should call the ticketDAO method to retrieve tickets by the given status
+ *
+ * takes in the ticket object from controller layer
+ * @param {JSON} ticket the ticket object to be sent to the DAO
+ * @returns the persisted data or null
+ */
+async function getTicketsByStatus(status) {
+    const data = ticketDAO.findTicketsByStatus(status);
     if (data) {
         logger.info(`Tickets found | ticketService | getTicketsByStatus | Data: ${data}`)
         return data;
@@ -77,11 +84,18 @@ async function getTicketsByStatus(pending) {
     }
 }
 
-
+/**
+ * evaluates the truthiness of the ticket fields
+ *
+ * takes in the ticket object
+ * @param {JSON} ticket the ticket object to be evaluated
+ * @returns true or false depending on truthiness of given fields
+ */
 function validateTicket(ticket) {
     const amountResult = !ticket.amount ? false : true;
-    const descResult = ticket.description > 0;
-    return (amountResult && descResult);
+    const descResult = ticket.description.length > 0;
+    const authorResult = ticket.author.lenght > 0;
+    return (amountResult && descResult && authorResult);
 }
 
 module.exports = {
