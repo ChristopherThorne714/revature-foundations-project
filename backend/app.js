@@ -4,7 +4,7 @@ const { loggerMiddleware } = require('./util/logger');
 const { authenticateToken } = require('./util/jwt');
 
 const userRoutes = require('./routes/api/userRoutes');
-// const ticketRoutes = require('./routes/api/ticketRoutes');
+const ticketRoutes = require('./routes/api/ticketRoutes');
 
 const app = express();
 

@@ -9,7 +9,7 @@ const ticketService = require('../service/ticketService');
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the created ticket if one was created
  */
-async function postTicket(req, res) { 
+async function PostTicket(req, res) { 
     if (validatePostTicket(req.body)) {
         const { amount, description, pending, author } = req.body;
         const data = await ticketService.postTicket({amount, description, pending, author});
@@ -26,7 +26,7 @@ async function postTicket(req, res) {
  *
  * @return sends res.status back to client with a message and the found messages if any were found
  */
-async function getTickets() { 
+async function GetTickets() { 
     const data = await ticketService.getTickets();
     if (data) { 
         res.status(200).json({message: "Tickets found", data})
@@ -43,7 +43,7 @@ async function getTickets() {
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the found tickets if any were found 
  */
-async function getTicketsByAuthor(req, res) {
+async function GetTicketsByAuthor(req, res) {
     const { username } = req.body;
     const data = await ticketService.getTicketsByUsername(username);
     if (data) {
@@ -61,7 +61,7 @@ async function getTicketsByAuthor(req, res) {
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the retrieved tickets if any were found
  */
-async function getTicketsByStatus(req, res) { 
+async function GetTicketsByStatus(req, res) { 
     const { status } = req.body;
     const data = ticketService.getTicketsByStatus(status);
     if (data) { 
@@ -83,8 +83,8 @@ async function validatePostTicket(ticket) {
 }
 
 module.exports = { 
-    postTicket,
-    getTickets,
-    getTicketsByAuthor,
-    getTicketsByStatus
+    PostTicket,
+    GetTickets,
+    GetTicketsByAuthor,
+    GetTicketsByStatus
 }
