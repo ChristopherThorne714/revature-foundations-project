@@ -1,8 +1,15 @@
 const ticketDAO = require('../repository/ticketDAO');
 
-const bcrypt = require('bcrypt');
 const { logger } = require('../util/logger');
 
+
+/**
+ * should call the ticketDAO method to persist tickets and return the persisted data
+ *
+ * takes in the ticket object from controller layer
+ * @param {JSON} ticket the ticket object to be sent to the DAO
+ * @returns the persisted data or null
+ */
 async function postTicket(ticket) { 
     const pending = !ticket.pending ? true : ticket.pending;
     if (validateTicket(ticket)) {
@@ -21,6 +28,11 @@ async function postTicket(ticket) {
     }
 }
 
+/**
+ * should call the DAO layer to retrieve a list of all tickets in db
+ *
+ * @returns the persisted data or null
+ */
 async function getTickets() { 
     const data = await ticketDAO.findTickets();
     if (data) { 
@@ -32,6 +44,13 @@ async function getTickets() {
     }
 }
 
+/**
+ * should call the ticketDAO method to retrieve tickets by their associated user
+ *
+ * takes in the ticket object from controller layer
+ * @param {JSON} ticket the ticket object to be sent to the DAO
+ * @returns the persisted data or null
+ */
 async function getTicketsByUsername(username) { 
     if(username) { 
         const data = ticketDAO.findTicketsByUsername(username);

@@ -29,6 +29,11 @@ async function createTicket(ticket) {
     }
 }
 
+/**
+ * should retrieve a list of all tickets in db
+ *
+ * @returns THe retrieved list or null
+ */
 async function findTickets() { 
     const command = new ScanCommand({TableName});
     try { 
@@ -41,12 +46,19 @@ async function findTickets() {
     }
 }
 
-async function findTicketsByUsername(username) { 
+/**
+ * should retrieve a list of tickets associated with a given author
+ *
+ * takes in the author name 
+ * @param {string} author string to be filtered by
+ * @returns the retrieved data or null 
+ */
+async function findTicketsByAuthor(author) { 
         const command = new ScanCommand({ 
         TableName, 
-        FilterExpression: '#username = :username',
-        ExpressionAttributeNames: {'#username' : 'username'},
-        ExpressionAttributeValues: {':username' : username}
+        FilterExpression: '#author = :author',
+        ExpressionAttributeNames: {'#author' : 'author'},
+        ExpressionAttributeValues: {':author' : author}
     });
     try { 
         const data = documentClient.send(command);
@@ -57,12 +69,19 @@ async function findTicketsByUsername(username) {
     }
 }
 
+/**
+ * should retrieve a list of tickets associated with a given status
+ *
+ * takes in the desired status
+ * @param {string} status string to be filtered by
+ * @returns the retrieved data or null 
+ */
 async function findTicketsByStatus(status) {
     const command = new ScanCommand({ 
         TableName, 
-        FilterExpression: '#username = :username',
-        ExpressionAttributeNames: {'#username' : 'username'},
-        ExpressionAttributeValues: {':username' : username}
+        FilterExpression: '#status = :status',
+        ExpressionAttributeNames: {'#status' : 'status'},
+        ExpressionAttributeValues: {':status' : status}
     });
     try { 
         const data = documentClient.send(command);
@@ -77,6 +96,6 @@ async function findTicketsByStatus(status) {
 module.exports = { 
     createTicket,
     findTickets,
-    findTicketsByUsername,
+    findTicketsByAuthor,
     findTicketsByStatus
 }
