@@ -11,17 +11,22 @@ const { logger } = require('../util/logger');
  * @returns the persisted data or null
  */
 async function postTicket(ticket) { 
-    const pending = !ticket.pending ? true : ticket.pending;
+    const status = !ticket.status ? "pending" : "resolved";
     if (validateTicket(ticket)) {
         const data = await ticketDAO.createTicket({
             amount: ticket.amount,
             description: ticket.description,
-            pending,
+            status,
             ticket_id: crypto.randomUUID(),
             author: ticket.author
         });
-        logger.info(`Creating new user | ticketService | postTicket | Data: ${data}`);
-        return data;
+        if (data) {
+            logger.info(`Creating new ticket | ticketService | postTicket | Data: ${data}`);
+            return data;
+        } else { 
+            logger.info(`Failed to create ticket | ticketService | postTicket`);
+            return null;
+        }
     } else { 
         logger.info(`Failed to validate ticket | ticketService | postTicket | error: ${JSON.stringify(ticket)}`);
         return null;
@@ -53,7 +58,7 @@ async function getTickets() {
  */
 async function getTicketsByUsername(username) { 
     if(username) { 
-        const data = ticketDAO.findTicketsByUsername(username);
+        const data = await ticketDAO.findTicketsByUsername(username);
         if (data) {
             logger.info(`Tickets found | ticketService | getTicketsByUsername | Data: ${data}`);
             return data;
@@ -75,7 +80,7 @@ async function getTicketsByUsername(username) {
  * @returns the retrieved tickets or null
  */
 async function getTicketsByStatus(status) {
-    const data = ticketDAO.findTicketsByStatus(status);
+    const data = await ticketDAO.findTicketsByStatus(status);
     if (data) {
         logger.info(`Tickets found | ticketService | getTicketsByStatus | Data: ${data}`)
         return data;
@@ -94,7 +99,7 @@ async function getTicketsByStatus(status) {
 function validateTicket(ticket) {
     const amountResult = !ticket.amount ? false : true;
     const descResult = ticket.description.length > 0;
-    const authorResult = ticket.author.lenght > 0;
+    const authorResult = ticket.author.length > 0;
     return (amountResult && descResult && authorResult);
 }
 

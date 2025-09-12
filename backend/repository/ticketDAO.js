@@ -5,7 +5,7 @@ const { logger } = require('../util/logger');
 const client = new DynamoDBClient({region: 'us-east-1'});
 const documentClient = DynamoDBDocumentClient.from(client);
 
-const TableName = "user_table";
+const TableName = "tickets_table";
 
 /**
  * should persist a ticket to the database
@@ -19,12 +19,12 @@ async function createTicket(ticket) {
         TableName,
         Item: ticket
     });
-    try { 
-        const data = documentClient.send(command);
-        logger.info(`PUT command to database complete | ticketDAO | createTicket | data: : ${JSON.stringify(data)}`);
+    try {
+        const data = await documentClient.send(command);
+        logger.info(`PUT command to database complete | ticketDAO | createTicket | data: : ${JSON.stringify(JSON.stringify(data))}`);
         return data;
     } catch (err) {
-        logger.error(`Error in ticketDAO | createTicket | error: ${data}`);
+        logger.error(`Error in ticketDAO | createTicket | error: ${err}`);
         return null; 
     }
 }
@@ -37,7 +37,7 @@ async function createTicket(ticket) {
 async function findTickets() { 
     const command = new ScanCommand({TableName});
     try { 
-        const data = documentClient.send(command);
+        const data = await documentClient.send(command);
         logger.info(`GET command to database complete: ${JSON.stringify(data)}`);
         return data;
     } catch (err) {
@@ -61,8 +61,8 @@ async function findTicketsByAuthor(author) {
         ExpressionAttributeValues: {':author' : author}
     });
     try { 
-        const data = documentClient.send(command);
-        logger.info(`SCAN command to database complete: ${data}`);
+        const data = await documentClient.send(command);
+        logger.info(`SCAN command to database complete: ${JSON.stringify(data)}`);
     } catch (err) { 
         logger.error(err);
         return null; 
@@ -84,8 +84,8 @@ async function findTicketsByStatus(status) {
         ExpressionAttributeValues: {':status' : status}
     });
     try { 
-        const data = documentClient.send(command);
-        logger.info(`SCAN command to database complete: ${data}`);
+        const data = await documentClient.send(command);
+        logger.info(`SCAN command to database complete: ${JSON.stringify(data)}`);
         return data;
     } catch (err) { 
         logger.error(err); 

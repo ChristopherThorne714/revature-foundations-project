@@ -7,4 +7,8 @@ router.post('/', ticketController.PostTicket);
 
 router.get('/', ticketController.GetTickets);
 
+router.get('/author/:author', ticketController.GetTicketsByAuthor);
+
+router.get('/status/:status', ticketController.GetTicketsByStatus);
+
 module.exports = router;

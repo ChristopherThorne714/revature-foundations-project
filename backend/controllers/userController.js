@@ -46,7 +46,7 @@ const RegisterUser = async (req, res) => {
         if (data) { 
             res.status(201).json({message: `Created user: ${JSON.stringify(data)}`});
         } else { 
-            res.status(400).json({message: `User not created`, data: req.body});
+            res.status(400).json({message: `Username already taken`, data: req.body});
         }
     } else { 
         res.status(400).json({message: `Invalid username or password`, data: req.body});

@@ -18,6 +18,8 @@ async function PostTicket(req, res) {
         } else { 
             res.status(400).json({message: "Invalid ticket"});
         }
+    } else { 
+        res.status(400).json({message: "Invalid amount, description, or author | ticketController | PostTicket"});
     }
 }
 
@@ -63,7 +65,7 @@ async function GetTicketsByAuthor(req, res) {
  */
 async function GetTicketsByStatus(req, res) { 
     const { status } = req.body;
-    const data = ticketService.getTicketsByStatus(status);
+    const data = await ticketService.getTicketsByStatus(status);
     if (data) { 
         res.status(200).json({message: "Tickets found", data});     
     } else { 
@@ -78,8 +80,8 @@ async function GetTicketsByStatus(req, res) {
  * @param {JSON} ticket the ticket object to be checked
  * @returns true if all fields are present or false otherwise
  */
-async function validatePostTicket(ticket) { 
-    return (ticket.amount && ticket.description && ticket.author);
+function validatePostTicket(ticket) {
+    return ((ticket.amount && ticket.description) && ticket.author);
 }
 
 module.exports = { 
