@@ -3,6 +3,15 @@ const jwt = require('jsonwebtoken');
 
 const secretKey = 'my-secret-key';
 
+
+/**
+ * should call the service layer method to validate the user and create the jwt token
+ *
+ * takes in the req, res objects
+ * @param {JSON} req object containing the request information to be parsed
+ * @param {JSON} res object to be manipulated and sent back to the client
+ * @return sends res.status back to client with a message and the created user if one was created
+ */
 const Login = async (req, res) => { 
     const {username, password} = req.body;
     const data = await userService.validateLogin(username, password);
@@ -23,6 +32,14 @@ const Login = async (req, res) => {
     }
 }
 
+/**
+ * should call the service layer method to persist a user
+ *
+ * takes in the req, res objects
+ * @param {JSON} req object containing the request information to be parsed
+ * @param {JSON} res object to be manipulated and sent back to the client
+ * @return sends res.status back to client with a message and the created user if one was created
+ */
 const RegisterUser = async (req, res) => { 
     if(validatePostUser(req.body)) {
         const data = await userService.postUser(req.body);

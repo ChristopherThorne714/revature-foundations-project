@@ -31,7 +31,7 @@ async function postTicket(ticket) {
 /**
  * should call the DAO layer to retrieve a list of all tickets in db
  *
- * @returns the persisted data or null
+ * @returns the retrieved tickets or null
  */
 async function getTickets() { 
     const data = await ticketDAO.findTickets();
@@ -49,7 +49,7 @@ async function getTickets() {
  *
  * takes in the ticket object from controller layer
  * @param {JSON} ticket the ticket object to be sent to the DAO
- * @returns the persisted data or null
+ * @returns the retrieved tickets or null
  */
 async function getTicketsByUsername(username) { 
     if(username) { 
@@ -72,7 +72,7 @@ async function getTicketsByUsername(username) {
  *
  * takes in the ticket object from controller layer
  * @param {JSON} ticket the ticket object to be sent to the DAO
- * @returns the persisted data or null
+ * @returns the retrieved tickets or null
  */
 async function getTicketsByStatus(status) {
     const data = ticketDAO.findTicketsByStatus(status);

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// load controllers
-// const {} = require('../../controllers/ticketController');
+const {} = require('../../controllers/ticketController');
+
+//register routes here

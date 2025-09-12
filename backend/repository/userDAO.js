@@ -7,6 +7,13 @@ const documentClient = DynamoDBDocumentClient.from(client);
 
 const TableName = "users_table";
 
+/**
+ * should persist a user to the database
+ *
+ * takes in the user object from userService
+ * @param {JSON} user the user object to persist
+ * @returns the persisted data or null
+ */
 async function createUser(user) {
     const command = new PutCommand({
         TableName, 
@@ -22,6 +29,13 @@ async function createUser(user) {
     }
 }
 
+/**
+ * should retrieve a list of users associated with a given username
+ *
+ * takes in the username name 
+ * @param {string} username string to be filtered by
+ * @returns the retrieved user or null
+ */
 async function findUserByUsername(username) { 
     const command = new ScanCommand({ 
         TableName, 

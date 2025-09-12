@@ -3,6 +3,14 @@ const userDAO = require('../repository/userDAO');
 const bcrypt = require('bcrypt');
 const { logger } = require('../util/logger');
 
+
+/**
+ * should call the userDAO method to persist users, validate the user fields, and encrypt the user.password string
+ *
+ * takes in the user object from controller layer
+ * @param {JSON} user the user object to be sent to the DAO
+ * @returns the persisted data or null
+ */
 async function postUser(user) {
     const saltRounds = 10; 
     const role = !user.role ? "employee" : user.role;
@@ -23,6 +31,14 @@ async function postUser(user) {
     }
 }
 
+/**
+ * should call the userDAO method to find a user with the given username and compare the given password with the one found
+ *
+ * takes in the username and password fields
+ * @param {string} username the username to be checked for 
+ * @param {string} password the password to be compared against
+ * @returns the found user or null
+ */
 async function validateLogin(username, password) { 
     const user = await getUserByUsername(username);
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -35,6 +51,13 @@ async function validateLogin(username, password) {
     }
 }
 
+/**
+ * should call the userDAO method to retrieve users by their associated user
+ *
+ * takes in the user object from controller layer
+ * @param {JSON} user the user object to be sent to the DAO
+ * @returns the persisted data or null
+ */
 async function getUserByUsername(username) { 
     if (username) {
         const data = await userDAO.findUserByUsername(username);
@@ -50,6 +73,13 @@ async function getUserByUsername(username) {
     return null;
 }
 
+/**
+ * evaluates the truthiness of the user fields
+ *
+ * takes in the user object
+ * @param {JSON} user the user object to be evaluated
+ * @returns true or false depending on truthiness of given fields
+ */
 function validateUser(user) { 
     const usernameResult = user.username.length > 0;
     const passwordResult = user.password.length > 0;

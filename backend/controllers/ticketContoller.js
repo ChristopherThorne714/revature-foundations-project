@@ -1,7 +1,14 @@
 const ticketService = require('../service/ticketService');
 
 
-
+/**
+ * should call the service layer method to persist a ticket
+ *
+ * takes in the req, res objects
+ * @param {JSON} req object containing the request information to be parsed
+ * @param {JSON} res object to be manipulated and sent back to the client
+ * @return sends res.status back to client with a message and the created ticket if one was created
+ */
 async function postTicket(req, res) { 
     if (validatePostTicket(req.body)) {
         const { amount, description, pending, author } = req.body;
@@ -14,6 +21,11 @@ async function postTicket(req, res) {
     }
 }
 
+/**
+ * should call the service layer method to retrieve all ticket objects
+ *
+ * @return sends res.status back to client with a message and the found messages if any were found
+ */
 async function getTickets() { 
     const data = await ticketService.getTickets();
     if (data) { 
@@ -23,7 +35,15 @@ async function getTickets() {
     }
 }
 
-async function getTicketsByUsername(req, res) {
+/**
+ * should call the service layer method to retrieve tickets by author
+ *
+ * takes in the req, res objects
+ * @param {JSON} req object containing the request information to be parsed
+ * @param {JSON} res object to be manipulated and sent back to the client
+ * @return sends res.status back to client with a message and the found tickets if any were found 
+ */
+async function getTicketsByAuthor(req, res) {
     const { username } = req.body;
     const data = await ticketService.getTicketsByUsername(username);
     if (data) {
@@ -33,6 +53,14 @@ async function getTicketsByUsername(req, res) {
     }
 }
 
+/**
+ * should call the service layer method to retrieve tickets with the desired status
+ *
+ * takes in the req, res objects
+ * @param {JSON} req object containing the request information to be parsed
+ * @param {JSON} res object to be manipulated and sent back to the client
+ * @return sends res.status back to client with a message and the retrieved tickets if any were found
+ */
 async function getTicketsByStatus(req, res) { 
     const { status } = req.body;
     const data = ticketService.getTicketsByStatus(status);
@@ -43,6 +71,13 @@ async function getTicketsByStatus(req, res) {
     }
 }
 
+/**
+ * checks if the required fields are present
+ *
+ * takes in the ticket object 
+ * @param {JSON} ticket the ticket object to be checked
+ * @returns true if all fields are present or false otherwise
+ */
 async function validatePostTicket(ticket) { 
     return (ticket.amount && ticket.description && ticket.author);
 }
@@ -50,6 +85,6 @@ async function validatePostTicket(ticket) {
 module.exports = { 
     postTicket,
     getTickets,
-    getTicketsByUsername,
+    getTicketsByAuthor,
     getTicketsByStatus
 }
