@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, UpdateCommand, PutCommand, ScanCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, UpdateCommand, PutCommand, ScanCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const { logger } = require('../util/logger');
 
 const client = new DynamoDBClient({region: 'us-east-1'});
@@ -95,7 +95,31 @@ async function findTicketsByStatus(status) {
 }
 
 /**
- * should update a single ticket item using the ticket_id
+ * should retrieve a single ticket item pertaining to the given ticket_id
+ *
+ * takes in the desired ticket_id
+ * @param {string} ticket_id string to be filtered by
+ * @returns the retrieved data or null 
+ */
+async function findTicketById(ticket_id) { 
+    const command = new QueryCommand({ 
+        TableName, 
+        FilterExpression: '#ticket_id = :ticket_id',
+        ExpressionAttributeNames: {'#ticket_id' : 'ticket_id'},
+        ExpressionAttributeValues: {':ticket_id' : ticket_id}
+    });
+    try { 
+        const data = await documentClient.send(command); 
+        logger.info(`QUERY command to database complete | ticketDAO | findTIcketById | data: ${JSON.stringify(data)}`);
+        return data;
+    } catch (err) { 
+        logger.error(`Error in ticketDAO | findTicketById | error: ${JSON.stringify(err)}`);
+        return null;
+    }
+}
+
+/**
+ * should update/process a single ticket item using the ticket_id
  *
  * takes in the ticket_id
  * @param {string} ticket_id string to be filtered by
@@ -122,11 +146,11 @@ async function processTicketById(ticket_id, status) {
     }
 }
 
-
 module.exports = { 
     createTicket,
     findAllTickets,
     findTicketsByAuthor,
     findTicketsByStatus,
+    findTicketById,
     processTicketById
 }
