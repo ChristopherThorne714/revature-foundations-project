@@ -13,7 +13,7 @@ app.use(loggerMiddleware);
 
 app.use('/api/users', userRoutes);
 
-app.use(authenticateToken);
+// app.use(authenticateToken);
 
 app.use('/api/tickets', ticketRoutes);
 

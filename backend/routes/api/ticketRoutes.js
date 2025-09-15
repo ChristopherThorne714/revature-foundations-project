@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const { PostTicket, GetAllTickets, GetTicketsByAuthor, GetTicketsByStatus } = require('../../controllers/ticketController');
+const ticketController = require('../../controllers/ticketController');
 
-router.post('/', PostTicket);
+router.post('/', ticketController.PostTicket);
 
-router.get('/', GetAllTickets);
+router.get('/', ticketController.GetAllTickets);
 
-router.get('/author/:author', GetTicketsByAuthor);
+router.get('/author/:author', ticketController.GetTicketsByAuthor);
 
-router.get('/status/:status', GetTicketsByStatus);
+router.get('/status/:status', ticketController.GetTicketsByStatus);
 
-router.post('/:ticketId', someMiddleware);
+router.post('/:ticketId', ticketController.ProcessTicketById);
 
 /**
  * TODO: 

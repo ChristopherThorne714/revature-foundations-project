@@ -75,6 +75,24 @@ const GetTicketsByStatus = async (req, res) =>  {
 }
 
 /**
+ * should should call the service layer method to process tickets by id
+ *
+ * takes in the req, res objects
+ * @param {JSON} req object containing the request information to be parsed
+ * @param {JSON} res object to be manipulated and sent back to the client
+ * @return sends res.status back to client with a message and the updated ticket if any were changed
+ */
+async function ProcessTicketById(req, res) { 
+    const ticket_id = req.params.ticketId;
+    const data = await ticketService.processTicketById(ticket_id);
+    if (data) { 
+        res.status(202).json({message: "Ticket updated", data});
+    } else {
+        res.status(400).json({message: `invalid ticket_id or That ticket has status: resolved already`});
+    }
+}
+
+/**
  * checks if the required fields are present
  *
  * takes in the ticket object 
@@ -90,5 +108,6 @@ module.exports = {
     GetAllTickets,
     GetTicketsByAuthor,
     GetTicketsByStatus,
-    validatePostTicket
+    validatePostTicket,
+    ProcessTicketById
 }

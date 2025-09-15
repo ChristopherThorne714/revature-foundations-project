@@ -86,6 +86,7 @@ async function getTicketsByStatus(status) {
         return data;
     } else { 
         logger.info(`No tickets found | ticketService | getTicketsByStatus | `)
+        return null;
     }
 }
 
@@ -98,9 +99,20 @@ async function getTicketsByStatus(status) {
  */
 async function processTicketById(ticket_id) { 
     // check if the ticket_id is pending
-    const pendingCheck = ticketDAO.findTicketById(ticket_id);
-    console.log(pendingCheck);
-    return null;
+    const pendingCheck = await ticketDAO.findTicketById(ticket_id);
+    if (pendingCheck && pendingCheck === 'pending') {
+        const data = await ticketDAO.processTicketById(ticket_id);
+        if (data) { 
+            logger.info(`Ticket updated | ticketService | processTicketById | data: ${data}`);
+            return data;
+        } else { 
+            logger.info(`Ticket not updated | ticketService | processTicketById`);
+            return null;
+        }
+    } else { 
+        logger.info(`No ticket found or ticket already resolved | ticketService | processTicketById `);
+        return null;
+    }
 }
 
 /**

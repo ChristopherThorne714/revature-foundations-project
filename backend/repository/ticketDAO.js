@@ -104,14 +104,13 @@ async function findTicketsByStatus(status) {
 async function findTicketById(ticket_id) { 
     const command = new QueryCommand({ 
         TableName, 
-        FilterExpression: '#ticket_id = :ticket_id',
-        ExpressionAttributeNames: {'#ticket_id' : 'ticket_id'},
+        KeyConditionExpression: 'ticket_id = :ticket_id',
         ExpressionAttributeValues: {':ticket_id' : ticket_id}
     });
     try { 
         const data = await documentClient.send(command); 
         logger.info(`QUERY command to database complete | ticketDAO | findTIcketById | data: ${JSON.stringify(data)}`);
-        return data;
+        return data.Items[0].status;
     } catch (err) { 
         logger.error(`Error in ticketDAO | findTicketById | error: ${JSON.stringify(err)}`);
         return null;
