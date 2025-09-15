@@ -76,7 +76,7 @@ async function getTicketsByUsername(username) {
  * should call the ticketDAO method to retrieve tickets by the given status
  *
  * takes in the ticket object from controller layer
- * @param {JSON} ticket the ticket object to be sent to the DAO
+ * @param {JSON} status
  * @returns the retrieved tickets or null
  */
 async function getTicketsByStatus(status) {
@@ -87,6 +87,20 @@ async function getTicketsByStatus(status) {
     } else { 
         logger.info(`No tickets found | ticketService | getTicketsByStatus | `)
     }
+}
+
+/**
+ * should check if the ticket associated with ticket_id has the pending status and then call the ticketDAO method to update it
+ *
+ * takes in the ticket_id
+ * @param {string} ticket_id string to be filtered by
+ * @returns the updated data or null 
+ */
+async function processTicketById(ticket_id) { 
+    // check if the ticket_id is pending
+    const pendingCheck = ticketDAO.findTicketById(ticket_id);
+    console.log(pendingCheck);
+    return null;
 }
 
 /**
@@ -107,5 +121,6 @@ module.exports = {
     postTicket,
     getAllTickets,
     getTicketsByUsername,
-    getTicketsByStatus
+    getTicketsByStatus,
+    processTicketById
 }
