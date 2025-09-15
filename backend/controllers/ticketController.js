@@ -9,7 +9,7 @@ const ticketService = require('../service/ticketService');
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the created ticket if one was created
  */
-async function PostTicket(req, res) { 
+const PostTicket = async (req, res) => { 
     if (validatePostTicket(req.body)) {
         const { amount, description, pending, author } = req.body;
         const data = await ticketService.postTicket({amount, description, pending, author});
@@ -28,8 +28,9 @@ async function PostTicket(req, res) {
  *
  * @return sends res.status back to client with a message and the found messages if any were found
  */
-async function GetTickets() { 
-    const data = await ticketService.getTickets();
+const GetAllTickets = async (req, res) => {
+    console.log('GetAllTickets()');
+    const data = await ticketService.getAllTickets();
     if (data) { 
         res.status(200).json({message: "Tickets found", data})
     } else { 
@@ -45,7 +46,7 @@ async function GetTickets() {
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the found tickets if any were found 
  */
-async function GetTicketsByAuthor(req, res) {
+const GetTicketsByAuthor = async (req, res) => {
     const { username } = req.body;
     const data = await ticketService.getTicketsByUsername(username);
     if (data) {
@@ -63,11 +64,11 @@ async function GetTicketsByAuthor(req, res) {
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the retrieved tickets if any were found
  */
-async function GetTicketsByStatus(req, res) { 
-    const { status } = req.body;
+const GetTicketsByStatus = async (req, res) =>  {
+    const status = req.params.status;
     const data = await ticketService.getTicketsByStatus(status);
     if (data) { 
-        res.status(200).json({message: "Tickets found", data});     
+        res.status(200).json({message: "Tickets found", data});
     } else { 
         res.status(400).json({message: `No tickets found with status ${status}`});
     }
@@ -86,7 +87,7 @@ function validatePostTicket(ticket) {
 
 module.exports = { 
     PostTicket,
-    GetTickets,
+    GetAllTickets,
     GetTicketsByAuthor,
     GetTicketsByStatus,
     validatePostTicket

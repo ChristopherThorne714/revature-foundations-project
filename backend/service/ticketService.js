@@ -38,10 +38,10 @@ async function postTicket(ticket) {
  *
  * @returns the retrieved tickets or null
  */
-async function getTickets() { 
-    const data = await ticketDAO.findTickets();
+async function getAllTickets() {
+    const data = await ticketDAO.findAllTickets();
     if (data) { 
-        logger.info(`Tickets found | ticketService | getTickets | Data: ${data}`);
+        logger.info(`Tickets found | ticketService | getAllTickets | Data: ${data}`);
         return data;
     } else { 
         logger.info(`No tickets found | ticketService | getTickets`);
@@ -105,7 +105,7 @@ function validateTicket(ticket) {
 
 module.exports = {
     postTicket,
-    getTickets,
+    getAllTickets,
     getTicketsByUsername,
     getTicketsByStatus
 }

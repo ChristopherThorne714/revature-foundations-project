@@ -8,21 +8,21 @@ async function authenticateToken(req, res, next) {
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
-        res.status(400).json({message: "Access denied"});
+        return res.status(400).json({message: "Access denied"});
     } else { 
-        const user = await decodeJWT(token);
+        const user = decodeJWT(token);
         if (user) {
             req.user = user;
             next();
         } else { 
-            res.status(400).json({message: 'Bad JWT'});
+            return res.status(401).json({message: 'Bad JWT'});
         }
     }
 }
 
-async function decodeJWT(token) {
+function decodeJWT(token) {
     try { 
-        const user = await jwt.verify(token, secretKey);
+        const user = jwt.verify(token, secretKey);
         return user;
     } catch (err) {
         logger.error(err);

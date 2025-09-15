@@ -1,21 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const ticketController = require('../../controllers/ticketController');
+const { PostTicket, GetAllTickets, GetTicketsByAuthor, GetTicketsByStatus } = require('../../controllers/ticketController');
 
-router.post('/', ticketController.PostTicket);
+router.post('/', PostTicket);
 
-router.get('/', ticketController.GetTickets);
+router.get('/', GetAllTickets);
 
-router.get('/author/:author', ticketController.GetTicketsByAuthor);
+router.get('/author/:author', GetTicketsByAuthor);
 
-router.get('/status/:status', ticketController.GetTicketsByStatus);
+router.get('/status/:status', GetTicketsByStatus);
 
 /**
  * TODO: 
  *  register more routes for: approving/denying tickets
- *      view pending tickets
- *      view approved tickets
  *  employees should be able to view their own ticket history
  *  previous/archived tickets should show submission details
  */

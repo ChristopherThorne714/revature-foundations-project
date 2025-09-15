@@ -18,7 +18,7 @@ async function createUser(user) {
     const command = new PutCommand({
         TableName, 
         Item: user
-    })
+    });
     try { 
         const data = await documentClient.send(command);
         logger.info(`PUT command to database complete ${JSON.stringify(data)}`);
