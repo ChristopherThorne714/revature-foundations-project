@@ -47,7 +47,7 @@ const GetAllTickets = async (req, res) => {
  * @return sends res.status back to client with a message and the found tickets if any were found 
  */
 const GetTicketsByAuthor = async (req, res) => {
-    const { username } = req.body;
+    const username = req.params.author;
     const data = await ticketService.getTicketsByUsername(username);
     if (data) {
         res.status(200).json({message: "Tickets found", data});        
@@ -65,7 +65,7 @@ const GetTicketsByAuthor = async (req, res) => {
  * @return sends res.status back to client with a message and the retrieved tickets if any were found
  */
 const GetTicketsByStatus = async (req, res) =>  {
-    const status = req.params.status;
+    const status = req.query.status || req.params.status;
     const data = await ticketService.getTicketsByStatus(status);
     if (data) { 
         res.status(200).json({message: "Tickets found", data});

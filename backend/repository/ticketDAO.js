@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, GetCommand, PutCommand, ScanCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, UpdateCommand, PutCommand, ScanCommand } = require('@aws-sdk/lib-dynamodb');
 const { logger } = require('../util/logger');
 
 const client = new DynamoDBClient({region: 'us-east-1'});
@@ -38,10 +38,10 @@ async function findAllTickets() {
     const command = new ScanCommand({TableName});
     try { 
         const data = await documentClient.send(command);
-        logger.info(`GET command to database complete: ${JSON.stringify(data)}`);
+        logger.info(`GET command to database complete | ticketDAO | findAllTickets | data: ${JSON.stringify(data)}`);
         return data.Items.length > 0 ? data.Items[0] : null;
     } catch (err) {
-        logger.error(err);
+        logger.error(`Error in ticketDAO | findAllTickets | error: ${err}`);
         return null;
     }
 }
@@ -62,10 +62,10 @@ async function findTicketsByAuthor(author) {
     });
     try { 
         const data = await documentClient.send(command);
-        logger.info(`SCAN command to database complete: ${JSON.stringify(data)}`);
+        logger.info(`SCAN command to database complete | ticketDAO | fintTicketByAuthor | data: ${JSON.stringify(data)}`);
         return data.Items.length > 0 ? data.Items[0] : null;
     } catch (err) { 
-        logger.error(err);
+        logger.error(`Error in ticketDAO | findTicketsByAuthor | error: ${err}`);
         return null; 
     }
 }
@@ -86,17 +86,47 @@ async function findTicketsByStatus(status) {
     });
     try { 
         const data = await documentClient.send(command);
-        logger.info(`SCAN command to database complete: ${JSON.stringify(data)}`);
+        logger.info(`SCAN command to database complete | ticketDAO | fintTicketsByStatus | data: ${JSON.stringify(data)}`);
         return data.Items.length > 0 ? data.Items[0] : null;
     } catch (err) { 
-        logger.error(err); 
+        logger.error(`Error in ticketDAO | findTicketsByStatus | error: ${err}`);
         return null; 
     }
 }
+
+/**
+ * should update a single ticket item using the ticket_id
+ *
+ * takes in the ticket_id
+ * @param {string} ticket_id string to be filtered by
+ * @returns the updated item or null
+ */
+async function processTicketById(ticket_id, status) { 
+    const command = new UpdateCommand({ 
+        TableName,
+        key: {
+            PartitionKeyAttribute: ticket_id,
+        },
+        UpdateExpression: 'SET #status = :status',
+        ExpressionAttributeNames: {'#status' : 'status'},
+        ExpressionAttributeValues: {':status' : status},
+        ReturnValues: 'UPDATED_NEW'
+    });
+    try { 
+        const data = await documentClient.send(command);
+        logger.info(`UPDATE command to database complete | ticketDAO | processTicketById | data: ${JSON.stringify(data)}`);
+        return data;
+    } catch (err) { 
+        logger.error(`Error in ticketDAO | processTicketById | error: ${err}`);
+        return null;
+    }
+}
+
 
 module.exports = { 
     createTicket,
     findAllTickets,
     findTicketsByAuthor,
-    findTicketsByStatus
+    findTicketsByStatus,
+    processTicketById
 }

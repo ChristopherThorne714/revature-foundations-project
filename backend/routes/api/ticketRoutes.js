@@ -11,6 +11,8 @@ router.get('/author/:author', GetTicketsByAuthor);
 
 router.get('/status/:status', GetTicketsByStatus);
 
+router.post('/:ticketId', someMiddleware);
+
 /**
  * TODO: 
  *  register more routes for: approving/denying tickets
