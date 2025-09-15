@@ -124,15 +124,13 @@ async function findTicketById(ticket_id) {
  * @param {string} ticket_id string to be filtered by
  * @returns the updated item or null
  */
-async function processTicketById(ticket_id, status) { 
+async function processTicketById(ticket_id) { 
     const command = new UpdateCommand({ 
         TableName,
-        key: {
-            PartitionKeyAttribute: ticket_id,
-        },
+        Key: { ticket_id : ticket_id },
         UpdateExpression: 'SET #status = :status',
         ExpressionAttributeNames: {'#status' : 'status'},
-        ExpressionAttributeValues: {':status' : status},
+        ExpressionAttributeValues: {':status' : 'resolved'},
         ReturnValues: 'UPDATED_NEW'
     });
     try { 
@@ -140,7 +138,7 @@ async function processTicketById(ticket_id, status) {
         logger.info(`UPDATE command to database complete | ticketDAO | processTicketById | data: ${JSON.stringify(data)}`);
         return data;
     } catch (err) { 
-        logger.error(`Error in ticketDAO | processTicketById | error: ${err}`);
+        logger.error(`Error in ticketDAO | processTicketById | error: ${JSON.stringify(err)}`);
         return null;
     }
 }

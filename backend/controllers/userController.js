@@ -15,12 +15,13 @@ const secretKey = 'my-secret-key';
 const Login = async (req, res) => { 
     const {username, password} = req.body;
     const data = await userService.validateLogin(username, password);
+    console.log(data);
     if (data) { 
         const token = jwt.sign(
             { 
                 id: data.user_id,
                 username,
-                role: data.user.role
+                role: data.role
             },
             secretKey,
             {

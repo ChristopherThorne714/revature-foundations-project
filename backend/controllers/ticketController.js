@@ -47,8 +47,8 @@ const GetAllTickets = async (req, res) => {
  * @return sends res.status back to client with a message and the found tickets if any were found 
  */
 const GetTicketsByAuthor = async (req, res) => {
-    const username = req.params.author;
-    const data = await ticketService.getTicketsByUsername(username);
+    const author = req.params.author;
+    const data = await ticketService.getTicketsByAuthor(author);
     if (data) {
         res.status(200).json({message: "Tickets found", data});        
     } else { 
@@ -82,7 +82,7 @@ const GetTicketsByStatus = async (req, res) =>  {
  * @param {JSON} res object to be manipulated and sent back to the client
  * @return sends res.status back to client with a message and the updated ticket if any were changed
  */
-async function ProcessTicketById(req, res) { 
+const ProcessTicketById = async (req, res) => { 
     const ticket_id = req.params.ticketId;
     const data = await ticketService.processTicketById(ticket_id);
     if (data) { 

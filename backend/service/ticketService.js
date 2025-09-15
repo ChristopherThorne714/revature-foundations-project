@@ -50,24 +50,24 @@ async function getAllTickets() {
 }
 
 /**
- * should call the ticketDAO method to retrieve tickets by their associated user
+ * should call the ticketDAO method to retrieve tickets by their associated author
  *
- * takes in the ticket object from controller layer
- * @param {JSON} ticket the ticket object to be sent to the DAO
+ * takes in the author string from the controller
+ * @param {JSON} author string to be sent to ticketDAO
  * @returns the retrieved tickets or null
  */
-async function getTicketsByUsername(username) { 
-    if(username) { 
-        const data = await ticketDAO.findTicketsByUsername(username);
+async function getTicketsByAuthor(author) { 
+    if(author) { 
+        const data = await ticketDAO.findTicketsByAuthor(author);
         if (data) {
-            logger.info(`Tickets found | ticketService | getTicketsByUsername | Data: ${data}`);
+            logger.info(`Tickets found | ticketService | getTicketsByauthor | Data: ${data}`);
             return data;
         } else { 
-            logger.info(`No tickets found | ticketService | getTicketsByUsername | Username: ${username}`);
+            logger.info(`No tickets found | ticketService | getTicketsByauthor | author: ${author}`);
             return null;
         }
     } else { 
-        logger.info(`No username given | ticketService | getTicketsByUsername`);
+        logger.info(`No author given | ticketService | getTicketsByauthor`);
         return null;
     }
 }
@@ -132,7 +132,7 @@ function validateTicket(ticket) {
 module.exports = {
     postTicket,
     getAllTickets,
-    getTicketsByUsername,
+    getTicketsByAuthor,
     getTicketsByStatus,
     processTicketById
 }
