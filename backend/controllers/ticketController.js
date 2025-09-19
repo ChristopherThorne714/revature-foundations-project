@@ -84,7 +84,8 @@ const GetTicketsByStatus = async (req, res) =>  {
  */
 const ProcessTicketById = async (req, res) => { 
     const ticket_id = req.params.ticketId;
-    const data = await ticketService.processTicketById(ticket_id);
+    const ticket_status = req.body.status;
+    const data = await ticketService.processTicketById(ticket_id, ticket_status);
     if (data) { 
         res.status(202).json({message: "Ticket updated", data});
     } else {

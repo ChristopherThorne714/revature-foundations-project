@@ -124,13 +124,13 @@ async function findTicketById(ticket_id) {
  * @param {string} ticket_id string to be filtered by
  * @returns the updated item or null
  */
-async function processTicketById(ticket_id) { 
+async function processTicketById(ticket_id, status) { 
     const command = new UpdateCommand({ 
         TableName,
         Key: { ticket_id : ticket_id },
         UpdateExpression: 'SET #status = :status',
         ExpressionAttributeNames: {'#status' : 'status'},
-        ExpressionAttributeValues: {':status' : 'resolved'},
+        ExpressionAttributeValues: {':status' : status},
         ReturnValues: 'UPDATED_NEW'
     });
     try { 

@@ -1,5 +1,4 @@
 const ticketDAO = require('../repository/ticketDAO');
-
 const { logger } = require('../util/logger');
 
 
@@ -97,11 +96,11 @@ async function getTicketsByStatus(status) {
  * @param {string} ticket_id string to be filtered by
  * @returns the updated data or null 
  */
-async function processTicketById(ticket_id) { 
+async function processTicketById(ticket_id, status) { 
     // check if the ticket_id is pending
     const pendingCheck = await ticketDAO.findTicketById(ticket_id);
     if (pendingCheck && pendingCheck === 'pending') {
-        const data = await ticketDAO.processTicketById(ticket_id);
+        const data = await ticketDAO.processTicketById(ticket_id, status);
         if (data) { 
             logger.info(`Ticket updated | ticketService | processTicketById | data: ${data}`);
             return data;
