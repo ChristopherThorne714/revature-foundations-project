@@ -87,7 +87,7 @@ async function findTicketsByStatus(status) {
     try { 
         const data = await documentClient.send(command);
         logger.info(`SCAN command to database complete | ticketDAO | fintTicketsByStatus | data: ${JSON.stringify(data)}`);
-        return data.Items.length > 0 ? data.Items[0] : null;
+        return data.Items.length > 0 ? data.Items : null;
     } catch (err) { 
         logger.error(`Error in ticketDAO | findTicketsByStatus | error: ${err}`);
         return null; 

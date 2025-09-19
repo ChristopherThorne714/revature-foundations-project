@@ -97,4 +97,6 @@ function validateUser(user) {
 module.exports = {
     postUser,
     validateLogin,
+    getUserByUsername,
+    validateUser
 }
